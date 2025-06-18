@@ -93,4 +93,24 @@ console.log(listaAlumnos);
 
 // GENERAR REPORTE INDIVIDUAL
 
+function generarReporteCompleto(listaAlumnos) {
+    console.log(" REPORTE COMPLETO DE ESTUDIANTES ");
+
+    estudiantes.forEach(est => {
+        let nombre = est.nombre;
+        let calificaciones = est.calificaciones;
+        let promedio = calcularPromedio(calificaciones);
+        let calificacionMax = Math.max(...calificaciones);
+        let calificacionMin = Math.min(...calificaciones);
+
+        console.log(`Nombre: ${nombre}`);
+        console.log(`Calificaciones: ${calificaciones.join(", ")}`);
+        console.log(`Promedio: ${promedio}`);
+        console.log(`Calificación más alta: ${calificacionMax}`);
+        console.log(`Calificación más baja: ${calificacionMin}`);
+        console.log("------------------------------------------");
+    });
+}
+
+generarReporteCompleto(listaAlumnos);
 
