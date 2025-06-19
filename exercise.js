@@ -2,115 +2,106 @@
 
 // ARRAY DE ESTUDIANTES Y SUS CALIFICACIONES
 let estudiantes = [
-    { nombre: "Juliana", calificaciones: [85, 90, 70, 92] },
-    { nombre: "Luis", calificaciones: [60, 60, 80, 88] },
-    { nombre: "Valentina", calificaciones: [95, 88, 50, 90] },
+  { nombre: "Juliana", calificaciones: [85, 90, 70, 92] },
+  { nombre: "Luis", calificaciones: [60, 60, 80, 88] },
+  { nombre: "Valentina", calificaciones: [95, 88, 50, 90] },
 ];
 
-//PROMEDIO DE CALIFICACIONES - reduce y toFixed(2)
-
-function calcularPromedio(calificaciones) {
-    let suma = calificaciones.reduce(function(total, nota) {
-        return total + nota;
-    }, 0); 
-    let promedio = suma / calificaciones.length;
-    return promedio.toFixed(2); 
+// MOSTRAR ESTUDIANTES
+function mostrarEstudiantes() {
+  console.log("Lista de estudiantes:");
+  estudiantes.forEach(est => {
+    console.log(`- ${est.nombre}`);
+  });
 }
 
-// MOSTRAR INFORMACIÓN COMPLETA DE CADA ESTUDIANTE - MATH.MAX Y MANTH.MIN
+// PROMEDIO DE CALIFICACIONES -REDUCE
+function calcularPromedio(calificaciones) {
+  let suma = calificaciones.reduce((total, nota) => total + nota, 0);
+  let promedio = suma / calificaciones.length;
+  return promedio.toFixed(2);
+}
 
-estudiantes.forEach(function(estudiante) {
-    console.log("Nombre:", estudiante.nombre);
-    console.log("Calificaciones:", estudiante.calificaciones.join(", ")); // el "join" muestra las notas separadas por coma
-    console.log("Promedio:", calcularPromedio(estudiante.calificaciones));
-    console.log("Calificación más alta:", Math.max(...estudiante.calificaciones));
-    console.log("Calificación más baja:", Math.min(...estudiante.calificaciones));
-    console.log("---------------------------"); // separador visual entre estudiantes, es como el hr en HTML
-});
 
-// AGREGAR UNA NOTA AL ARRAY Y BUSCAR ESTUDIANTE - FIND Y PUSH
-
-function agregarNota(nombre, nota) {
-  let estudiante = estudiantes.find(e => e.nombre === nombre);
+// AGREGAR CALIFICACIÓN - PUSH
+function agregarCalificacion() {
+  let nombre = prompt("Nombre del estudiante:");
+  let nota = Number(prompt("Ingrese la calificación (0 a 100):"));
+  let estudiante = estudiantes.find(est => est.nombre === nombre);
 
   if (estudiante) {
     estudiante.calificaciones.push(nota);
-    console.log(`Nota ${nota} agregada a ${nombre}`);
+    console.log(`Se agregó la nota ${nota} a ${nombre}.`);
   } else {
-    console.log(`Estudiante "${nombre}" no encontrado.`);
+    console.log("Estudiante no encontrado.");
   }
 }
-agregarNota("Luis", 77);
-agregarNota("Valentina", 80);
-agregarNota("Pedro", 86);
-agregarNota("Juliana", 91);
 
-// ELIMINAR NOTAS
-function eliminarNota(nombre) {
-  let estudiante = estudiantes.find(e => e.nombre === nombre);
+// QUITAR CALIFICACIÓN - POP
+function quitarCalificacion() {
+  let nombre = prompt("Nombre del estudiante:");
+  let estudiante = estudiantes.find(est => est.nombre === nombre);
 
   if (estudiante) {
     if (estudiante.calificaciones.length > 0) {
       let notaEliminada = estudiante.calificaciones.pop();
       console.log(`Se eliminó la nota ${notaEliminada} de ${nombre}`);
     } else {
-      console.log(`El estudiante ${nombre} no tiene notas para eliminar.`);
+      console.log("No hay calificaciones que eliminar.");
     }
   } else {
-    console.log(`Estudiante "${nombre}" no encontrado.`);
+    console.log("Estudiante no encontrado.");
   }
 }
 
-eliminarNota("Juliana");
-eliminarNota("Luis");
-eliminarNota("Valentina");
+// GENERAR REPORTE INDIVIDUAL 
+function generarReporte() {
+  let nombre = prompt("Nombre del estudiante:");
+  let estudiante = estudiantes.find(est => est.nombre === nombre);
 
-// Crear nuevo array con promedio actualizado
-// map permite recorrer el array cy construir uno nuevo con lo que yo quiera en cada posición, por eso el orden del return: name, notes y promedio
+  if (estudiante) {
+    let notas = estudiante.calificaciones.join(", ");
+    let promedio = calcularPromedio(estudiante.calificaciones);
+    let max = Math.max(...estudiante.calificaciones);
+    let min = Math.min(...estudiante.calificaciones);
 
-let estudiantesConPromedio = estudiantes.map(est => { 
-  return {
-    nombre: est.nombre,
-    calificaciones: est.calificaciones,
-    promedio: calcularPromedio(est.calificaciones)
-  };
-});
-
-// FILTRAR ESTUDIANTES APROBADOS 
-let aprobados = estudiantesConPromedio.filter(est => est.promedio >= 75);
-
-console.log("Estudiantes aprobados:");
-aprobados.forEach(est => {
-  console.log(`${est.nombre} - Promedio: ${est.promedio}`);
-});
-
-// ORDENAR ALFABETICAMENTE
-
-let listaAlumnos = ["Luis", "Valentina", "Juliana"];
-console.log(listaAlumnos);
-listaAlumnos.sort();
-console.log(listaAlumnos);
-
-// GENERAR REPORTE INDIVIDUAL
-
-function generarReporteCompleto(listaAlumnos) {
-    console.log(" REPORTE COMPLETO DE ESTUDIANTES ");
-
-    estudiantes.forEach(est => {
-        let nombre = est.nombre;
-        let calificaciones = est.calificaciones;
-        let promedio = calcularPromedio(calificaciones);
-        let calificacionMax = Math.max(...calificaciones);
-        let calificacionMin = Math.min(...calificaciones);
-
-        console.log(`Nombre: ${nombre}`);
-        console.log(`Calificaciones: ${calificaciones.join(", ")}`);
-        console.log(`Promedio: ${promedio}`);
-        console.log(`Calificación más alta: ${calificacionMax}`);
-        console.log(`Calificación más baja: ${calificacionMin}`);
-        console.log("------------------------------------------");
-    });
+    console.log(`Reporte de ${nombre}`);
+    console.log(`Notas: ${notas}`);
+    console.log(`Promedio: ${promedio}`);
+    console.log(`Nota más alta: ${max}`);
+    console.log(`Nota más baja: ${min}`);
+  } else {
+    console.log("Estudiante no encontrado.");
+  }
 }
 
-generarReporteCompleto(listaAlumnos);
+// MENÚ INTERACTIVO
+let opcion = 0;
+do {
+  opcion = Number(prompt(`Bienvenido \n
+  1. Mostrar estudiantes\n
+  2. Agregar calificación\n
+  3. Quitar calificación\n
+  4. Generar reporte individual\n
+  5. Salir`));
 
+  switch (opcion) {
+    case 1:
+      mostrarEstudiantes();
+      break;
+    case 2:
+      agregarCalificacion();
+      break;
+    case 3:
+      quitarCalificacion();
+      break;
+    case 4:
+      generarReporte();
+      break;
+    case 5:
+      console.log("¡Hasta luego!");
+      break;
+    default:
+      console.log("Opción no válida. Intenta de nuevo.");
+  }
+} while (opcion !== 5);
